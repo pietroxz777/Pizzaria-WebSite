@@ -1,5 +1,5 @@
 # Sistema de Pizzaria
-📌 Sobre o projeto
+* 📌 Sobre o projeto
 
 Este projeto foi desenvolvido com o objetivo de praticar desenvolvimento web, com foco na criação de uma API utilizando Node.js e na integração com o front-end.
 
@@ -10,7 +10,7 @@ A aplicação simula uma pizzaria, permitindo visualizar produtos com nome, desc
 <img width="238" height="574" alt="image" src="https://github.com/user-attachments/assets/eebe4799-bb56-46e0-88ac-96a1c2303a1e" />
 
 # ⚙️ Funcionalidades
-Listagem de pizzas
+* Listagem de pizzas
 Cadastro de clientes
 Registro de pedidos
 Organização por rotas
