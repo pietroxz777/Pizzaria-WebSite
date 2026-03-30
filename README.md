@@ -1,96 +1,87 @@
-# 🍕 Sistema de Pizzaria
+# Sistema de Pizzaria
+📌 Sobre o projeto
 
-Projeto desenvolvido com o objetivo de praticar desenvolvimento web, focando principalmente na criação de uma API simples usando Node.js e na integração com o front-end.
+Este projeto foi desenvolvido com o objetivo de praticar desenvolvimento web, com foco na criação de uma API utilizando Node.js e na integração com o front-end.
 
-## 📌 Descrição
+A aplicação simula uma pizzaria, permitindo visualizar produtos com nome, descrição, preço e imagem, além de utilizar uma estrutura mais organizada com rotas, models e banco de dados.
 
-O sistema simula uma pizzaria, onde é possível visualizar produtos (como pizzas) com nome, descrição, preço e imagem.
+# 🖼️ Preview
 
-Os dados são carregados a partir de um arquivo JSON, enquanto as imagens são armazenadas localmente no projeto.
+<img width="238" height="574" alt="image" src="https://github.com/user-attachments/assets/eebe4799-bb56-46e0-88ac-96a1c2303a1e" />
 
-Esse projeto foi feito com foco em aprendizado, para entender melhor como funciona a comunicação entre cliente (front-end) e servidor (back-end).
-
-## 🎯 Objetivo
-
-* Aprender a criar um servidor com Node.js
-* Entender como funciona uma API simples
-* Trabalhar com arquivos JSON como “banco de dados”
-* Integrar back-end com front-end
-* Organizar melhor a estrutura de um projeto
-
-## 🛠️ Tecnologias utilizadas
-
-* Node.js
-* Express
-* JavaScript
-* HTML
-* CSS
-
+# ⚙️ Funcionalidades
+Listagem de pizzas
+Cadastro de clientes
+Registro de pedidos
+Organização por rotas
+Integração com API
+Uso de banco de dados SQLite
+# 🛠️ Tecnologias
+Back-end	Front-end
+Node.js	HTML
+Express	CSS
+SQLite	JavaScript
+# 📁 Estrutura do projeto
 ## 📁 Estrutura do projeto
 
-/backend
-
-* server.js → responsável pelo servidor e rotas
-* data → arquivos JSON com os dados
-* fotos → imagens dos produtos
-
-/frontend
-
-* index.html → página principal
-* style.css → estilos
-* script.js → lógica do front-end
-
-## 🔗 Funcionamento da API
-
-A API retorna os dados dos produtos em formato JSON.
-
-Exemplo de rota:
-
-* GET `/produtos` → retorna todos os produtos
-
-Os dados são lidos diretamente do arquivo JSON, sem uso de banco de dados.
-
-## ▶️ Como executar o projeto
-
-1. Clone o repositório:
-
+```bash
+website-pizzaria/
+│
+├── public/              # Front-end
+│   ├── index.html
+│   ├── script.js
+│   └── style.css
+│
+├── src/                 # Back-end
+│   ├── database/        # Configuração do banco de dados
+│   │   └── sqlite.js
+│   │
+│   ├── middlewares/     # Middlewares da aplicação
+│   │   └── auth.js
+│   │
+│   ├── models/          # Models (estrutura dos dados)
+│   │   ├── Cliente.js
+│   │   ├── Pedido.js
+│   │   ├── Pizza.js
+│   │   └── Usuario.js
+│   │
+│   └── routes/          # Rotas da aplicação
+│       └── index.js
+│
+├── index.js             # Inicialização do servidor
+├── seed.js              # Script para popular o banco
+├── pizzaria.db          # Banco de dados SQLite
+├── .env                 # Variáveis de ambiente
+├── .gitignore
+└── README.md
 ```
-git clone https://github.com/seu-usuario/seu-repositorio.git](https://github.com/pietroxz777/Site-Pizzaria.git)
-```
-
-2. Acesse a pasta do projeto:
-
-```
-cd seu-repositorio
-```
-
-3. Instale as dependências:
-
-```
+# 🔄 Funcionamento
+Parte	Responsabilidade
+Back-end	Rotas, lógica e banco de dados
+Front-end	Interface e consumo da API
+Banco	Armazenamento de dados
+# ▶️ Como executar
+1. Clonar o repositório
+git clone https://github.com/pietroxz777/Pizzaria-WebSite.git
+2. Acessar a pasta
+cd Pizzaria-WebSite
+3. Instalar dependências
 npm install
-```
+4. Iniciar servidor
+node index.js
+5. Acessar no navegador
+http://localhost:3000
+# 📌 Observações
+O banco SQLite já está incluído no projeto
+O arquivo seed.js pode ser usado para popular o banco
+O front-end está na pasta public
+# 🚀 Melhorias futuras
+Sistema de login
+Carrinho de compras
+Painel administrativo
+Deploy online
+Melhor responsividade
+# 👨‍💻 Autores
 
-4. Inicie o servidor:
-
-```
-node server.js
-```
-
-5. Abra o arquivo `frontend/index.html` no navegador.
-
-## 📚 Aprendizados
-
-Durante o desenvolvimento, foram praticados conceitos como:
-
-* Criação de rotas com Express
-* Uso de JSON para armazenar dados
-* Separação entre front-end e back-end
-* Consumo de API no JavaScript
-* Organização de pastas em um projeto
-
-## 👨‍💻 Autores
-
-Pietro Pardim Vieira
-João Pedro Nascimento Ferreira
-
-"Assim como o ferro com o ferro se aguça, assim o homem afia o rosto do seu amigo." — Provérbios 27:17
+* Pietro Pardim Vieira
+* João Pedro Nascimento Ferreira
