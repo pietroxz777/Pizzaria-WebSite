@@ -1,3 +1,11 @@
+// ===============================
+// CONFIGURAÇÃO DO BANCO DE DADOS
+// - initSqlJs: importa a biblioteca SQL.js
+// - fs e path: manipulam arquivos e caminhos
+// - DB_PATH: define o caminho do arquivo do banco
+// - state: mantém a instância do banco na memória
+// ===============================
+
 const initSqlJs = require('sql.js');
 const fs        = require('fs');
 const path      = require('path');
@@ -6,6 +14,16 @@ const DB_PATH = process.env.DB_PATH
   || path.join(__dirname, '..', '..', 'pizzaria.db');
 
 const state = { db: null };
+//===========================================
+// ===============================
+// INICIALIZAÇÃO DAS TABELAS
+// - ready: aguarda a inicialização do SQL.js
+// - Cria o banco na memória ou carrega o arquivo existente
+// - Configura chave estrangeira com PRAGMA
+// - Cria tabelas: usuarios, clientes, pizzas, pedidos, itens_pedido
+// - Chama salvar() para persistir alterações no arquivo
+// - Loga mensagem de sucesso ao conectar
+// ===============================
 
 const ready = (async () => {
   const SQL = await initSqlJs();
@@ -99,6 +117,12 @@ const ready = (async () => {
   console.log('SQLite (sql.js) conectado:', DB_PATH);
   return db;
 })();
+//====================================================
+// ===============================
+// FUNÇÕES DE BANCO DE DADOS
+// - salvar(): exporta o banco em memória e salva no arquivo DB_PATH
+// - query(sql, params): executa consulta SQL com parâmetros e retorna resultados em array de objetos
+// ===============================
 
 function salvar() {
   if (!state.db) return;
@@ -116,6 +140,13 @@ function query(sql, params = []) {
   stmt.free();
   return results;
 }
+//====================================================
+// ===============================
+// FUNÇÕES DE EXECUÇÃO SQL
+// - run(sql, params): executa comando SQL (INSERT/UPDATE/DELETE), salva alterações e retorna ID e número de alterações
+// - get(sql, params): retorna apenas o primeiro registro de uma consulta
+// - module.exports: exporta ready, query, run, get e salvar para uso em outros arquivos
+// ===============================
 
 function run(sql, params = []) {
   state.db.run(sql, params);

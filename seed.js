@@ -1,6 +1,22 @@
+// ===============================
+// IMPORTAÇÃO DE MÓDULOS
+// - require('dotenv').config(): carrega variáveis de ambiente do arquivo .env
+// - sqlite.js: funções para conectar e manipular o banco SQLite
+// - bcryptjs: para criar e verificar hashes de senha
+// ===============================
+
 require('dotenv').config();
 const { ready, run, query } = require('./src/database/sqlite');
 const bcrypt = require('bcryptjs');
+
+//=====================================
+// ===============================
+// SEED DO BANCO DE DADOS
+// - Limpa todas as tabelas existentes
+// - Cria usuários iniciais com senhas criptografadas
+// - Popula clientes e pizzas de exemplo
+// - Logs informam o progresso e dados de login padrão
+// ===============================
 
 async function seed() {
   try {
@@ -16,11 +32,11 @@ async function seed() {
     try {
       run("DELETE FROM sqlite_sequence WHERE name IN ('itens_pedido','pedidos','pizzas','clientes','usuarios')");
     } catch(_) { }
-
+    //limpar o banco
     console.log('✅ Banco limpo');
 
     const hash = await bcrypt.hash('123456', 10);
-
+    //dados pessoais de login
     run('INSERT INTO usuarios (nome, email, senha, perfil) VALUES (?, ?, ?, ?)',
       ['Administrador Master', 'admin@pizzaria.com', hash, 'Administrador']);
     run('INSERT INTO usuarios (nome, email, senha, perfil) VALUES (?, ?, ?, ?)',
@@ -29,7 +45,7 @@ async function seed() {
       ['Garcom Oficial', 'garcom@pizzaria.com', hash, 'Garcom']);
 
     console.log('✅ 3 usuários criados');
-
+    //clientes ja salvos
     const clientes = [
       ['Lucas Ferreira Santos',   '11991234501', {rua:'Rua das Acácias',numero:'142',bairro:'Vila Madalena',cidade:'São Paulo',cep:'05435-000'}, 'Alérgico a glúten'],
       ['Camila Rodrigues Lima',   '11991234502', {rua:'Av. Paulista',numero:'900',bairro:'Bela Vista',cidade:'São Paulo',cep:'01310-100'}, ''],
@@ -52,13 +68,13 @@ async function seed() {
       ['Rodrigo Tavares Monteiro','11991234519', {rua:'Rua Itapeva',numero:'286',bairro:'Bela Vista',cidade:'São Paulo',cep:'01332-000'}, ''],
       ['Carolina Batista Pinto',  '11991234520', {rua:'Rua Peixoto Gomide',numero:'1100',bairro:'Jardim Paulista',cidade:'São Paulo',cep:'01409-001'}, 'Prefere bordas recheadas'],
     ];
-
+    //criação de clientes
     for (const [nome, tel, end, obs] of clientes) {
       run('INSERT INTO clientes (nome, telefone, endereco, observacoes) VALUES (?, ?, ?, ?)',
         [nome, tel, JSON.stringify(end), obs]);
     }
     console.log('✅ 20 clientes criados');
-
+    //pizzas disponiveis
     const pizzas = [
       ['Calabresa','Clássica brasileira, presença garantida em qualquer mesa','Calabresa fatiada, cebola e azeitona',{P:35,M:45,G:55},'tradicional'],
       ['Margherita','A tradição italiana em cada fatia','Molho de tomate, mussarela e manjericão fresco',{P:34,M:44,G:54},'tradicional'],
@@ -87,7 +103,7 @@ async function seed() {
         [nome, desc, ing, JSON.stringify(precos), cat]);
     }
     console.log('✅ 20 pizzas criadas');
-
+    //login aprovado
     console.log('======================================');
     console.log('🔥 SEED EXECUTADO COM SUCESSO!');
     console.log('======================================');

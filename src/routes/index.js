@@ -1,3 +1,11 @@
+// ===============================
+// ROTAS - CONFIGURAÇÃO INICIAL
+// - express.Router(): cria um roteador para a API
+// - jwt: para geração e verificação de tokens
+// - auth: middleware de autenticação
+// - modelos importados: Usuario, Pizza, Cliente, Pedido
+// ===============================
+
 const express  = require('express');
 const jwt      = require('jsonwebtoken');
 const router   = express.Router();
@@ -7,6 +15,15 @@ const Usuario  = require('../models/Usuario');
 const Pizza    = require('../models/Pizza');
 const Cliente  = require('../models/Cliente');
 const Pedido   = require('../models/Pedido');
+
+//====================================
+// ===============================
+// AUTENTICAÇÃO - LOGIN
+// - POST /auth/login: recebe email e senha
+// - Verifica se usuário existe e senha está correta
+// - Gera token JWT com validade de 8 horas
+// - Retorna token e dados do usuário
+// ===============================
 
 router.post('/auth/login', async (req, res) => {
   try {
@@ -28,6 +45,27 @@ router.post('/auth/login', async (req, res) => {
     res.json({ token, usuario: { id: usuario.id, nome: usuario.nome, email: usuario.email, perfil: usuario.perfil } });
   } catch (e) { res.status(500).json({ erro: e.message }); }
 });
+//===============================================
+// ===============================
+// ROTAS DE PIZZAS, CLIENTES E PEDIDOS
+// - Todas as rotas usam middleware `auth` para proteger o acesso
+// PIZZAS
+// GET    /pizzas          → lista todas as pizzas
+// GET    /pizzas/:id      → busca pizza pelo id
+// POST   /pizzas          → cria nova pizza (nome e ingredientes obrigatórios)
+// PUT    /pizzas/:id      → atualiza pizza existente
+// DELETE /pizzas/:id      → remove pizza
+//
+// CLIENTES
+// GET    /clientes        → lista clientes (opcional: ?busca=nome)
+// GET    /clientes/:id    → busca cliente pelo id
+// POST   /clientes        → cria cliente (nome e telefone obrigatórios)
+// PUT    /clientes/:id    → atualiza cliente existente
+// DELETE /clientes/:id    → remove cliente
+//
+// PEDIDOS
+// GET    /pedidos         → lista pedidos 
+// ===============================
 
 router.get('/pizzas', auth, async (req, res) => {
   try { res.json(await Pizza.findAll()); }
@@ -110,7 +148,22 @@ router.get('/pedidos', auth, async (req, res) => {
     res.json(await Pedido.findAll(filtros));
   } catch (e) { res.status(500).json({ erro: e.message }); }
 });
+//===============================================
+/*
+  PEDIDOS
+  GET    /pedidos/:id          → Ver pedido específico
+  POST   /pedidos              → Criar novo pedido
+  PATCH  /pedidos/:id/status   → Atualizar status do pedido
+  DELETE /pedidos/:id          → Deletar pedido
 
+  USUÁRIOS (somente Admin)
+  GET    /usuarios             → Lista todos os usuários
+  POST   /usuarios             → Criar novo usuário
+  PUT    /usuarios/:id         → Atualizar usuário
+  DELETE /usuarios/:id         → Deletar usuário
+
+  OBS: Todas as rotas exigem autenticação JWT.
+*/
 router.get('/pedidos/:id', auth, async (req, res) => {
   try {
     const p = await Pedido.findById(req.params.id);

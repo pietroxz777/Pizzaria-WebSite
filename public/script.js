@@ -1,3 +1,7 @@
+//============================//
+// VARIÁVEIS GLOBAIS E CONFIGURAÇÕES
+//============================//
+
 const API = '/api';
 
 let cPizzas   = [];
@@ -6,6 +10,10 @@ let cClientes = [];
 let TOKEN          = localStorage.getItem('pz_token') || '';
 let USUARIO_LOGADO = JSON.parse(localStorage.getItem('pz_usuario') || 'null');
 let mesaEmFechamento = null;
+//===============================//
+//============================//
+// FUNÇÃO DE LOGIN DO USUÁRIO
+//============================//
 
 async function fazerLogin() {
   const email = document.getElementById('l-email').value.trim();
@@ -49,6 +57,10 @@ async function fazerLogin() {
     btn.textContent = 'Entrar';
   }
 }
+//===========================================
+//============================//
+// FUNÇÕES GERAIS E UTILITÁRIAS
+//============================//
 
 function sair() {
   TOKEN = '';
@@ -110,6 +122,10 @@ async function api(method, url, body) {
   if (!res.ok) throw new Error(data.erro || 'Erro na requisição');
   return data;
 }
+//===============================================
+//============================//
+// FUNÇÃO PARA APLICAR PERFIL DO USUÁRIO
+//============================//
 
 function aplicarPerfil(usuario) {
   document.getElementById('sb-nome').textContent   = usuario.nome;
@@ -156,6 +172,10 @@ function aplicarPerfil(usuario) {
     ir('dashboard', document.querySelector('[onclick*="dashboard"]'));
   }
 }
+//==========================================================
+//============================//
+// CARREGAR MESAS E SEUS PEDIDOS ATIVOS
+//==========================================================
 
 async function carregarMesas(mesaFiltro = null) {
   const grid = document.getElementById('grid-mesas');
@@ -266,6 +286,10 @@ async function carregarMesas(mesaFiltro = null) {
     grid.innerHTML = `<div class="empty" style="color:var(--red)">${e.message}</div>`;
   }
 }
+//=====================================================
+//============================//
+// ABRIR MODAL DE PEDIDO DE MESA
+//============================//
 
 async function abrirPedidoMesa(mesaNum = null) {
   try {
@@ -286,6 +310,10 @@ async function abrirPedidoMesa(mesaNum = null) {
   addItemMesa();
   abrir('m-pedido-mesa');
 }
+//====================================================
+//==========================//
+// ADICIONAR ITEM AO PEDIDO DE MESA
+//==========================//
 
 function addItemMesa() {
   const d = document.createElement('div');
@@ -304,6 +332,12 @@ function addItemMesa() {
     <button class="btn-rm" onclick="this.parentElement.remove();recalcMesa()">×</button>`;
   document.getElementById('itens-mesa-lista').appendChild(d);
 }
+//===================================================
+//==========================//
+// RECALCULAR TOTAL DO PEDIDO DE MESA
+// Atualiza subtotal, total e preços de cada item ao alterar
+// pizza, tamanho ou quantidade
+//==========================//
 
 function recalcMesa() {
   let sub = 0;
@@ -318,6 +352,13 @@ function recalcMesa() {
   document.getElementById('pm-sub').textContent = R$(sub);
   document.getElementById('pm-tot').textContent = R$(sub);
 }
+//==================================================
+//===============================//
+// SALVAR PEDIDO DE MESA
+// Valida os itens do pedido, registra o cliente se necessário
+// e envia os dados da mesa para a API.
+// Atualiza a interface e exibe notificações de sucesso ou erro.
+//===============================//
 
 async function salvarPedidoMesa() {
   const mesa = parseInt(document.getElementById('pm-mesa').value) || 0;
@@ -368,6 +409,12 @@ async function salvarPedidoMesa() {
     carregarMesas();
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
+//=======================================================
+//===============================//
+// ABRIR MODAL DE FECHAMENTO DE MESA
+// Recebe a mesa, total e IDs dos pedidos, 
+// popula o modal com resumo e total e abre a interface.
+//===============================//
 
 function abrirFecharMesa(mesa, total, ids) {
   mesaEmFechamento = { mesa, total, ids: ids.split(',') };
@@ -379,6 +426,12 @@ function abrirFecharMesa(mesa, total, ids) {
     </p>`;
   abrir('m-fechar-mesa');
 }
+//====================================================
+//===============================//
+// CONFIRMAR FECHAMENTO DE MESA
+// Marca todos os pedidos da mesa como "entregue",
+// exibe notificação, fecha o modal e recarrega a lista de mesas.
+//===============================//
 
 async function confirmarFechamento() {
   if (!mesaEmFechamento) return;
@@ -395,6 +448,14 @@ async function confirmarFechamento() {
     carregarMesas();
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
+//===============================================
+
+//===============================//
+// NAVEGAÇÃO ENTRE SEÇÕES
+// Controla acesso baseado no perfil do usuário,
+// alterna seções visíveis e ativa o botão de menu correspondente,
+// chamando funções de carregamento específicas para cada página.
+//===============================//
 
 function ir(pg, btn) {
   const perfil = document.getElementById('sb-perfil').textContent;
@@ -421,6 +482,16 @@ function ir(pg, btn) {
   };
   if (loaders[pg]) loaders[pg]();
 }
+//=====================================================
+//===============================//
+// CARREGA DASHBOARD
+// Atualiza painel principal com:
+// - Saudação dinâmica
+// - Totais de pizzas, clientes, pedidos e faturamento
+// - Últimos pedidos (até 8)
+// - Pizzas disponíveis (até 8)
+// Armazena pizzas e clientes globalmente para uso posterior.
+//===============================//
 
 async function carregarDashboard() {
   const h = new Date().getHours();
@@ -472,7 +543,17 @@ async function carregarDashboard() {
 
   } catch (e) { toast('Erro dashboard: ' + e.message, 'err'); }
 }
+//======================================================
 
+//===============================//
+// CARREGA PIZZAS
+// Atualiza a tabela de pizzas com:
+// - Nome, categoria, ingredientes
+// - Preços P, M, G
+// - Status de disponibilidade
+// - Ações de editar e deletar
+// Armazena a lista de pizzas globalmente.
+//===============================//
 async function carregarPizzas() {
   const el = document.getElementById('tbl-pizzas');
   el.innerHTML = '<div class="spin-wrap"><div class="spin"></div> Carregando...</div>';
@@ -505,6 +586,16 @@ async function carregarPizzas() {
     el.innerHTML = `<div class="empty" style="color:var(--red)">${e.message}</div>`;
   }
 }
+//==========================================================
+//===============================//
+// ABRIR MODAL DE NOVA PIZZA
+// Prepara formulário para cadastro de pizza:
+// - Limpa todos os campos
+// - Define categoria padrão como "tradicional"
+// - Define status como disponível
+// - Atualiza título do modal
+// - Abre modal de pizza
+//===============================//
 
 function abrirPizza() {
   document.getElementById('m-pizza-t').textContent = 'Nova Pizza';
@@ -514,7 +605,9 @@ function abrirPizza() {
   document.getElementById('p-disp').value = 'true';
   abrir('m-pizza');
 }
-
+//=========================================================
+//EDITAR PIZZAS
+//=========================================================
 function editarPizza(id) {
   const p = cPizzas.find(x => x._id === id);
   if (!p) return;
@@ -530,7 +623,16 @@ function editarPizza(id) {
   document.getElementById('p-disp').value = String(p.disponivel);
   abrir('m-pizza');
 }
-
+//=======================================================
+//===============================//
+// SALVAR PIZZA
+// Cria ou atualiza pizza:
+// - Valida campos obrigatórios (nome e ingredientes)
+// - Monta objeto com dados da pizza
+// - Se id existe, atualiza; caso contrário, cria nova pizza
+// - Exibe feedback via toast
+// - Fecha modal e recarrega lista de pizzas
+//===============================//
 async function salvarPizza() {
   const id   = document.getElementById('p-id').value;
   const nome = document.getElementById('p-nome').value.trim();
@@ -557,6 +659,9 @@ async function salvarPizza() {
     carregarPizzas();
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
+//=====================================================
+//DELETA A PIZZA
+//=====================================================
 
 async function deletarPizza(id, nome) {
   if (!confirm(`Deletar "${nome}"?`)) return;
@@ -566,6 +671,15 @@ async function deletarPizza(id, nome) {
     carregarPizzas();
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
+//===================================================
+//===============================//
+// CARREGA CLIENTES
+// Atualiza a tabela de clientes:
+// - Suporta busca por nome ou telefone
+// - Exibe lista com nome, telefone, endereço e observações
+// - Adiciona botões para editar ou deletar cada cliente
+// - Armazena clientes globalmente para uso posterior
+//===============================//
 
 async function carregarClientes(busca = '') {
   const el = document.getElementById('tbl-clientes');
@@ -597,6 +711,12 @@ async function carregarClientes(busca = '') {
     el.innerHTML = `<div class="empty" style="color:var(--red)">${e.message}</div>`;
   }
 }
+//=====================================================
+//===============================//
+// ABRIR NOVO CLIENTE / BUSCAR CLIENTES
+// - buscarCli: faz busca com debounce de 400ms para otimizar chamadas
+// - abrirCliente: limpa formulário e abre modal para criar novo cliente
+//===============================//
 
 let _t;
 function buscarCli(v) {
@@ -610,6 +730,12 @@ function abrirCliente() {
     .forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
   abrir('m-cliente');
 }
+//====================================================
+//===============================//
+// ABRIR NOVO CLIENTE / BUSCAR CLIENTES
+// - buscarCli: faz busca com debounce de 400ms para otimizar chamadas
+// - abrirCliente: limpa formulário e abre modal para criar novo cliente
+//===============================//
 
 function editarCliente(id) {
   const c = cClientes.find(x => x._id === id);
@@ -627,6 +753,14 @@ function editarCliente(id) {
   document.getElementById('c-obs').value    = c.observacoes || '';
   abrir('m-cliente');
 }
+//=================================================
+
+//===============================//
+// SALVAR CLIENTE
+// - Cria ou atualiza cliente via API
+// - Valida campos obrigatórios (nome e telefone)
+// - Atualiza lista de clientes e fecha modal
+//===============================//
 
 async function salvarCliente() {
   const id   = document.getElementById('c-id').value;
@@ -655,6 +789,13 @@ async function salvarCliente() {
     carregarClientes();
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
+//=============================================
+//===============================//
+// DELETAR CLIENTE
+// - Confirmação antes de deletar
+// - Remove cliente via API
+// - Atualiza lista de clientes e exibe toast
+//===============================//
 
 async function deletarCliente(id, nome) {
   if (!confirm(`Deletar "${nome}"?`)) return;
@@ -664,7 +805,16 @@ async function deletarCliente(id, nome) {
     carregarClientes();
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
+//===========================================
 
+//===============================//
+// CARREGA PEDIDOS
+// - Busca todos os pedidos via API
+// - Exibe em tabela com:
+//   - Número do pedido, cliente, itens, subtotal, taxa de entrega, total, pagamento, status, data
+// - Botões de ação: alterar status e deletar
+// - Mensagem caso não haja pedidos
+//===============================//
 async function carregarPedidos() {
   const el = document.getElementById('tbl-pedidos');
   el.innerHTML = '<div class="spin-wrap"><div class="spin"></div> Carregando...</div>';
@@ -698,6 +848,16 @@ async function carregarPedidos() {
     el.innerHTML = `<div class="empty" style="color:var(--red)">${e.message}</div>`;
   }
 }
+//============================================
+//===============================//
+// ABRIR PEDIDO
+// - Carrega pizzas e clientes se ainda não estiverem em cache
+// - Preenche dropdown de clientes
+// - Limpa lista de itens, taxa de entrega, observações e valores totais
+// - Oculta campo de troco
+// - Adiciona uma linha de item padrão
+// - Abre modal de pedido
+//===============================//
 
 async function abrirPedido() {
   try {
@@ -720,7 +880,15 @@ async function abrirPedido() {
   addItem();
   abrir('m-pedido');
 }
-
+//=========================================
+//===============================//
+// ADICIONAR ITEM AO PEDIDO
+// - Cria uma nova linha de item
+// - Preenche dropdown de pizzas disponíveis com preços por tamanho
+// - Inclui selects de tamanho, quantidade e valor
+// - Botão de remover item com recalculo automático
+// - Adiciona linha ao container de itens do pedido
+//===============================//
 function addItem() {
   const d = document.createElement('div');
   d.className = 'item-row';
@@ -737,6 +905,14 @@ function addItem() {
 
   document.getElementById('itens-lista').appendChild(d);
 }
+//===========================================
+//===============================//
+// RECALCULA TOTAL DO PEDIDO
+// - Soma os preços de todos os itens selecionados
+// - Considera quantidade e tamanho de cada pizza
+// - Atualiza subtotal e total com taxa de entrega
+// - Atualiza o valor exibido em cada linha de item
+//===============================//
 
 function recalc() {
   let sub = 0;
@@ -755,13 +931,24 @@ function recalc() {
   document.getElementById('ped-sub').textContent = R$(sub);
   document.getElementById('ped-tot').textContent = R$(sub + taxa);
 }
+//============================================
+//TROCO DO CLIENTE
+//============================================
 
 function toggleTroco() {
   const pag = document.getElementById('ped-pag').value;
   document.getElementById('wrap-troco').style.display =
     pag === 'dinheiro' ? 'block' : 'none';
 }
-
+//===========================================
+//===============================//
+// SALVA NOVO PEDIDO
+// - Valida cliente e itens selecionados
+// - Monta objeto com pizzas, quantidades, tamanho, taxa e forma de pagamento
+// - Envia para API via POST
+// - Exibe mensagem de sucesso ou erro
+// - Atualiza lista de pedidos e fecha modal
+//===============================//
 async function salvarPedido() {
   const cliId = document.getElementById('ped-cli').value;
   if (!cliId) { toast('Selecione um cliente', 'err'); return; }
@@ -796,6 +983,15 @@ async function salvarPedido() {
     carregarPedidos();
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
+//====================================================
+//===============================//
+// ATUALIZA STATUS DO PEDIDO
+// - Abre modal com status atual do pedido
+// - Permite alterar status via select
+// - Envia atualização para API via PATCH
+// - Exibe toast de sucesso ou erro
+// - Atualiza tabela de pedidos após alteração
+//===============================//
 
 function abrirStatus(id, status) {
   document.getElementById('st-id').value  = id;
@@ -813,7 +1009,15 @@ async function salvarStatus() {
     carregarPedidos();
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
+//==================================================
 
+//===============================//
+// DELETA PEDIDO
+// - Confirma exclusão com o usuário
+// - Remove pedido via API DELETE
+// - Exibe toast de sucesso ou erro
+// - Recarrega lista de pedidos
+//===============================//
 async function deletarPedido(id) {
   if (!confirm('Deletar este pedido?')) return;
   try {
@@ -822,6 +1026,14 @@ async function deletarPedido(id) {
     carregarPedidos();
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
+//==================================================
+//===============================//
+// CARREGA USUÁRIOS
+// - Busca lista de usuários via API
+// - Exibe tabela com nome, e-mail, perfil, status e data de criação
+// - Fornece botão para deletar usuário
+// - Mostra mensagem de carregando ou vazio conforme necessário
+//===============================//
 
 async function carregarUsuarios() {
   const el = document.getElementById('tbl-usuarios');
@@ -851,12 +1063,23 @@ async function carregarUsuarios() {
     el.innerHTML = `<div class="empty" style="color:var(--red)">${e.message}</div>`;
   }
 }
+//======================================================
+//ABRIR USUARIO
+//======================================================
 
 function abrirUsuario() {
   ['u-nome','u-email','u-senha'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('u-perfil').value = 'Atendente';
   abrir('m-usuario');
 }
+//===================================================
+//===============================//
+// SALVA USUÁRIO
+// - Valida campos obrigatórios (nome, e-mail, senha)
+// - Cria novo usuário via API com perfil selecionado
+// - Exibe toast de sucesso ou erro
+// - Atualiza lista de usuários e fecha modal
+//===============================//
 
 async function salvarUsuario() {
   const nome  = document.getElementById('u-nome').value.trim();
@@ -874,7 +1097,14 @@ async function salvarUsuario() {
     carregarUsuarios();
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
-
+//========================================================
+//===============================//
+// DELETA USUÁRIO
+// - Confirma exclusão com o usuário
+// - Remove usuário via API
+// - Exibe toast de sucesso ou erro
+// - Atualiza lista de usuários após exclusão
+//===============================//
 async function deletarUsuario(id, nome) {
   if (!confirm(`Deletar "${nome}"?`)) return;
   try {

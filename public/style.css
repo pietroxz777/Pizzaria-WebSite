@@ -1,3 +1,9 @@
+/* //===============================//
+// ESTILOS LOGIN
+// - Configura cores, fontes e bordas
+// - Centraliza tela de login
+// - Estiliza caixa de login e logo
+//===============================// */
 :root {
   --bg:      #0f0f0f;
   --surf:    #181818;
@@ -47,6 +53,14 @@ body {
   text-align: center;
   margin-bottom: 30px;
 }
+/*===================================================*/
+/*===============================*/
+/* ESTILOS LOGIN E SIDEBAR
+   - Formata logo, título e subtítulo da tela de login
+   - Estiliza mensagens de erro
+   - Controla visibilidade do app conforme login
+   - Configura sidebar fixa e logo da sidebar */
+/*===============================*/
 
 .login-logo .em {
   font-size: 2.8rem;
@@ -108,6 +122,14 @@ body.logado #app        { display: flex; }
   letter-spacing: -0.2px;
   color: var(--red);
 }
+/*================================================*/
+/*===============================*/
+/* SIDEBAR – USUÁRIO E NAVEGAÇÃO
+   - Formata bloco de usuário e tag de perfil
+   - Agrupa seções e botões de navegação
+   - Adiciona hover, ativo e ícones
+   - Estiliza rodapé da sidebar */
+/*===============================*/
 
 .sb-user {
   display: flex;
@@ -174,6 +196,15 @@ body.logado #app        { display: flex; }
 }
 
 .sb-footer span { font-size: 0.7rem; color: var(--muted); }
+/*==========================================================*/
+/*===============================*/
+/* CONTEÚDO PRINCIPAL E CABEÇALHO
+   - Botão de logout com hover
+   - Área de conteúdo principal com margin para sidebar
+   - Cabeçalho da página com título e descrição
+   - Corpo da página com padding
+   - Seções ocultas por padrão e ativadas com classe 'ativa' */
+/*===============================*/
 
 .btn-logout {
   background: none;
@@ -218,6 +249,16 @@ body.logado #app        { display: flex; }
 
 .secao       { display: none; }
 .secao.ativa { display: block; }
+/*==========================================================*/
+/*===============================*/
+/* DASHBOARD E CARDS
+   - Grid de estatísticas responsivo
+   - Cards com cabeçalho e corpo
+   - Tabela responsiva dentro de card
+   - Cores dinâmicas para indicadores e ícones
+   - Textos estilizados com tamanho, peso e espaçamento
+   - Overflow controlado para tabelas e conteúdos */
+/*===============================*/
 
 .stats-grid {
   display: grid;
@@ -291,6 +332,16 @@ thead th {
   border-bottom: 1px solid var(--border);
   white-space: nowrap;
 }
+/*==================================================*/
+/*===============================*/
+/* TABELAS, BADGES E BOTOES
+   - Estilo para linhas de tabela e hover
+   - Badges com cores e categorias distintas
+   - Botões com variações de cor e tamanho
+   - Form groups com labels estilizados
+   - Transições suaves e tipografia consistente
+   - Suporte a botões de ação, status e categorias */
+/*===============================*/
 
 tbody tr { border-bottom: 1px solid var(--border); transition: background .1s; }
 tbody tr:last-child { border-bottom: none; }
@@ -355,6 +406,17 @@ td { padding: 10px 12px; vertical-align: middle; }
   text-transform: uppercase;
   letter-spacing: .3px;
 }
+/*=============================================================*/
+/*===============================*/
+/* FORMULÁRIOS, MODAIS E ITENS
+   - Inputs, selects e textareas com foco destacado
+   - Grades responsivas (fr2, fr3)
+   - Fundo de modal e modal centralizado
+   - Modal com tamanho máximo e scroll interno
+   - Cabeçalhos e rodapés de modal
+   - Linhas de itens com grid para pedidos
+   - Botão de remoção de item estilizado */
+/*===============================*/
 
 input, select, textarea {
   width: 100%;
@@ -439,7 +501,16 @@ select option { background: var(--surf2); }
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
 }
-
+/*=================================================================*/
+/*===============================*/
+/* TOTAL BOX, MINI ROWS, DIVISÓRIAS E TOASTS
+   - Caixa de totalização com linhas principais e secundárias
+   - Mini-rows com destaque para nomes e informações
+   - Divisórias simples
+   - Toasts para notificações flutuantes
+   - Spin-wrap para indicadores de carregamento
+   - Animação de spin para ícones de loading */
+/*===============================*/
 .total-box {
   background: var(--surf2);
   border: 1px solid var(--border);
@@ -506,6 +577,14 @@ select option { background: var(--surf2); }
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
+/*==============================================================*/
+/*===============================*/
+/* SPIN, EMPTY STATES E CARDS DE MESA
+   - Spin: círculo animado para loading
+   - Empty: mensagens de "nenhum item" com ícone
+   - Mesa-card: estrutura de card para mesas com head, body e foot
+   - Mesa-item: itens individuais dentro do card
+/*===============================*/
 
 .spin {
   width: 14px; height: 14px;
@@ -564,6 +643,17 @@ select option { background: var(--surf2); }
   border-bottom: 1px solid var(--border);
   color: var(--muted);
 }
+/*=====================================================*/
+/*===============================*/
+/* MESA-ITEMS, TOTAL E RESPONSIVIDADE
+   - .mesa-item:last-child: remove border do último item
+   - .mesa-item strong: destaca o texto
+   - .mesa-total: totaliza valores dentro do card
+   - @media (max-width: 860px): adapta layout para telas menores
+     - Sidebar encolhe
+     - Oculta textos e grupos do menu
+     - Ajusta conteúdo e grids para mobile
+/*===============================*/
 
 .mesa-item:last-child { border-bottom: none; }
 .mesa-item strong { color: var(--text); }

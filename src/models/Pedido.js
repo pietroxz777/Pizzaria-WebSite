@@ -1,3 +1,9 @@
+// ===============================
+// PEDIDOS - CONSULTAS BASE
+// - SELECT_PEDIDO: consulta padrão para pedidos
+// - Inclui dados do cliente (nome e telefone) usando LEFT JOIN
+// ===============================
+
 const { ready, query, run, get } = require('../database/sqlite');
 
 const SELECT_PEDIDO = `
@@ -8,6 +14,12 @@ const SELECT_PEDIDO = `
   FROM pedidos p
   LEFT JOIN clientes c ON c.id = p.cliente_id
 `;
+//==================================================
+// ===============================
+// PEDIDOS - FORMATAÇÃO
+// - formatarPedido(row, itens): transforma uma linha do pedido em objeto completo
+// - Inclui dados do cliente e itens detalhados do pedido
+// ===============================
 
 function formatarPedido(row, itens = []) {
   if (!row) return null;
@@ -44,8 +56,14 @@ function formatarPedido(row, itens = []) {
     updatedAt:      row.updated_at,
   };
 }
+//=========================================================
 
 const Pedido = {
+  // ===============================
+  // PEDIDOS - CRUD
+  // - findAll / findById: busca pedidos, incluindo itens e dados do cliente
+  // - create: cria pedido somando subtotal e detalhando cada item
+  //===============================
 
   async findAll({ garcomId } = {}) {
     await ready;
@@ -93,6 +111,13 @@ const Pedido = {
         subtotal:      subItem,
       });
     }
+    //==================================================
+    // ===============================
+    // PEDIDOS - CRIAÇÃO, ATUALIZAÇÃO E REMOÇÃO
+    // - create: soma subtotal + taxa, gera número do pedido, salva itens
+    // - updateStatus: muda status do pedido
+    // - delete: remove pedido e seus itens
+    // ===============================
 
     const total        = subtotal + (taxaEntrega || 0);
     const contagem     = get('SELECT COUNT(*) as total FROM pedidos');
@@ -135,5 +160,6 @@ const Pedido = {
     return info.changes > 0;
   },
 };
+//=======================================================
 
 module.exports = Pedido;

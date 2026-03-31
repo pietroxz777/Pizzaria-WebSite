@@ -1,3 +1,10 @@
+// ===============================
+// AUTENTICAÇÃO COM TOKEN
+// - Verifica se o usuário enviou um token JWT
+// - Se tiver token e for válido, deixa a pessoa continuar
+// - Se não tiver ou for inválido, mostra erro 401
+// ===============================
+
 const jwt = require('jsonwebtoken');
 
 function autenticar(req, res, next) {

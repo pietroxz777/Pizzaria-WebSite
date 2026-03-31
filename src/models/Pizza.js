@@ -1,3 +1,8 @@
+// ===============================
+// PIZZAS - FORMATAÇÃO DE DADOS
+// - formatarPizza: converte linha do banco em objeto com preços parseados e booleanos
+// ===============================
+
 const { ready, query, run, get } = require('../database/sqlite');
 
 function formatarPizza(row) {
@@ -15,6 +20,15 @@ function formatarPizza(row) {
     updatedAt:   row.updated_at,
   };
 }
+//=======================================================
+// ===============================
+// PIZZAS - OPERAÇÕES CRUD
+// - findAll: retorna todas as pizzas ordenadas por categoria e nome
+// - findById: retorna uma pizza pelo ID
+// - create: insere uma nova pizza no banco
+// - update: atualiza os dados de uma pizza existente
+// - delete: remove uma pizza pelo ID
+// ===============================
 
 const Pizza = {
 
@@ -78,5 +92,6 @@ const Pizza = {
     return info.changes > 0;
   },
 };
+//==============================================================
 
 module.exports = Pizza;

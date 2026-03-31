@@ -1,3 +1,12 @@
+// ===============================
+// FUNÇÃO PARA FORMATAR CLIENTE
+// - Recebe um registro do banco (row)
+// - Converte campos para um formato mais fácil de usar
+// - Transforma endereco de string JSON para objeto
+// - Converte ativo de 1/0 para true/false
+// - Retorna null se não receber nada
+// ===============================
+
 const { ready, query, run, get } = require('../database/sqlite');
 
 function formatarCliente(row) {
@@ -14,6 +23,16 @@ function formatarCliente(row) {
     updatedAt:  row.updated_at,
   };
 }
+//===========================================
+// ===============================
+// OBJETO CLIENTE
+// - Contém funções para manipular clientes no banco
+// - findAll(busca): lista todos ou filtra por nome/telefone
+// - findById(id): retorna um cliente específico
+// - create(dados): cria um novo cliente
+// - update(id, dados): atualiza um cliente existente
+// - delete(id): remove um cliente pelo ID
+// ===============================
 
 const Cliente = {
 

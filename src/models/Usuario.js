@@ -1,3 +1,8 @@
+// ===============================
+// USUÁRIOS - FORMATAÇÃO DE DADOS
+// - formatarUsuario: transforma a linha do banco em objeto JS com campos amigáveis
+// ===============================
+
 const { ready, query, run, get } = require('../database/sqlite');
 const bcrypt = require('bcryptjs');
 
@@ -14,6 +19,13 @@ function formatarUsuario(row) {
     updatedAt: row.updated_at,
   };
 }
+//==============================================
+// ===============================
+// USUÁRIOS - CRUD E AUTENTICAÇÃO
+// - findAll / findById / findByEmail: buscar usuários
+// - create / update / delete: gerenciar usuários no banco
+// - verificarSenha: compara senha digitada com hash salvo
+// ===============================
 
 const Usuario = {
 
@@ -89,5 +101,5 @@ const Usuario = {
     return bcrypt.compare(senhaDigitada, hashSalvo);
   },
 };
-
+//=======================================================
 module.exports = Usuario;
